@@ -1,8 +1,14 @@
 from pathlib import Path
 import os
+import secrets
 
 BASE_DIR = Path(__file__).resolve().parent.parent
-SECRET_KEY = os.environ.get("DJANGO_SECRET_KEY", "dev-only-change-me-before-deployment")
+DEPLOYMENT_ENV = os.environ.get("DJANGO_ENV", "development").lower()
+IS_PRODUCTION = DEPLOYMENT_ENV == "production"
+CONFIGURED_SECRET_KEY = os.environ.get("DJANGO_SECRET_KEY")
+if IS_PRODUCTION and not CONFIGURED_SECRET_KEY:
+    raise RuntimeError("DJANGO_SECRET_KEY debe configurarse en producción")
+SECRET_KEY = CONFIGURED_SECRET_KEY or secrets.token_urlsafe(50)
 DEBUG = os.environ.get("DJANGO_DEBUG", "1") == "1"
 ALLOWED_HOSTS = [host for host in os.environ.get("DJANGO_ALLOWED_HOSTS", "127.0.0.1,localhost").split(",") if host]
 
@@ -97,12 +103,16 @@ LOGOUT_REDIRECT_URL = "login"
 
 SESSION_COOKIE_HTTPONLY = True
 SESSION_COOKIE_SAMESITE = "Lax"
-SESSION_COOKIE_SECURE = os.environ.get("DJANGO_COOKIE_SECURE", "0") == "1"
+SESSION_COOKIE_SECURE = os.environ.get("DJANGO_COOKIE_SECURE", "1" if IS_PRODUCTION else "0") == "1"
 SESSION_COOKIE_AGE = 900
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 CSRF_COOKIE_HTTPONLY = True
 CSRF_COOKIE_SAMESITE = "Lax"
 CSRF_COOKIE_SECURE = SESSION_COOKIE_SECURE
+SECURE_SSL_REDIRECT = os.environ.get("DJANGO_SSL_REDIRECT", "1" if IS_PRODUCTION else "0") == "1"
+SECURE_HSTS_SECONDS = int(os.environ.get("DJANGO_HSTS_SECONDS", "31536000" if IS_PRODUCTION else "0"))
+SECURE_HSTS_INCLUDE_SUBDOMAINS = IS_PRODUCTION
+SECURE_HSTS_PRELOAD = IS_PRODUCTION
 SECURE_CONTENT_TYPE_NOSNIFF = True
 SECURE_REFERRER_POLICY = "same-origin"
 X_FRAME_OPTIONS = "DENY"

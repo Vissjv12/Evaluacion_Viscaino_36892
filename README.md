@@ -87,3 +87,5 @@ Para ZAP, ejecutar el servidor con datos sintéticos y usar primero un escaneo B
 SQLite permite una demostración reproducible, pero la concurrencia real debe validarse con PostgreSQL. No se conectan APIs del IESS ni se envían notificaciones reales. El prototipo no almacena historia clínica, diagnóstico, recetas ni documentos médicos.
 
 La relación entre riesgos, controles, herramientas y criterios de aceptación está documentada en [SECURITY_VALIDATION.md](./SECURITY_VALIDATION.md).
+
+Para revisar la configuración productiva sin cambiar el archivo base, usar variables de entorno equivalentes a `DJANGO_ENV=production`, `DJANGO_DEBUG=0`, `DJANGO_COOKIE_SECURE=1`, `DJANGO_SSL_REDIRECT=1` y una `DJANGO_SECRET_KEY` aleatoria. HSTS solo debe activarse cuando todo el sitio se sirva permanentemente por HTTPS.
