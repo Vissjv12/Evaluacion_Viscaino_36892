@@ -1,0 +1,7 @@
+Django
+argon2-cffi
+cryptography
+pyotp
+qrcode
+pytest
+

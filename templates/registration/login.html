@@ -1,0 +1,6 @@
+{% extends "base.html" %}{% block title %}Acceso · Turnos IESS{% endblock %}{% block content %}
+<section class="login-layout">
+  <div class="login-intro"><span class="eyebrow">SERVICIOS EN LÍNEA</span><h1>Agenda tu atención médica</h1><p>Consulta la disponibilidad y gestiona tus turnos de forma sencilla y segura.</p><div class="intro-line"></div><p class="muted">Prototipo académico de gestión de turnos.</p></div>
+  <section class="panel login-panel"><span class="eyebrow">INGRESO</span><h2>Bienvenido</h2><p class="muted">El personal interno requiere código TOTP.</p><form method="post">{% csrf_token %}{{ form.as_p }}<button type="submit" class="primary-button">Ingresar</button></form></section>
+</section>
+{% endblock %}

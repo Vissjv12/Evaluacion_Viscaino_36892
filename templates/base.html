@@ -1,0 +1,29 @@
+{% load static %}<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}Turnos IESS{% endblock %}</title>
+  <link rel="stylesheet" href="{% static 'css/app.css' %}">
+</head>
+<body>
+<header class="site-header">
+  <a class="brand" href="{% if user.is_authenticated %}{% url 'dashboard' %}{% else %}{% url 'login' %}{% endif %}">
+    <span class="brand-mark" aria-hidden="true">✚</span>
+    <span><strong>IESS</strong><small>Turnos en línea</small></span>
+  </a>
+  {% if user.is_authenticated %}
+  <nav class="site-nav" aria-label="Navegación principal">
+    <a href="{% url 'dashboard' %}">Inicio</a>
+    <a href="{% url 'availability' %}">Citas médicas</a>
+    {% if user.profile.role == 'AUDITOR' %}<a href="{% url 'audit' %}">Auditoría</a>{% endif %}
+    <form method="post" action="{% url 'logout' %}" class="logout-form">{% csrf_token %}<button type="submit" class="nav-button">Salir</button></form>
+  </nav>
+  {% endif %}
+</header>
+<main class="page-shell">
+{% for message in messages %}<p class="{% if message.tags == 'error' %}error{% else %}success{% endif %}">{{ message }}</p>{% endfor %}
+{% block content %}{% endblock %}
+</main>
+</body>
+</html>
