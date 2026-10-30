@@ -85,3 +85,5 @@ Para ZAP, ejecutar el servidor con datos sintéticos y usar primero un escaneo B
 ## Alcance conocido
 
 SQLite permite una demostración reproducible, pero la concurrencia real debe validarse con PostgreSQL. No se conectan APIs del IESS ni se envían notificaciones reales. El prototipo no almacena historia clínica, diagnóstico, recetas ni documentos médicos.
+
+La relación entre riesgos, controles, herramientas y criterios de aceptación está documentada en [SECURITY_VALIDATION.md](./SECURITY_VALIDATION.md).
